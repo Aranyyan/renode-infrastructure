@@ -89,6 +89,24 @@ namespace Antmicro.Renode.Peripherals.Miscellaneous
             return result;
         }
 
+        public void SendSetpoint()
+        {
+            // TODO Fix thread problem if triggering when things are being sent?
+            //byte CRTPHeader = 0x30;
+            byte[] CRTPData = {0x30,
+             0x00,0x00,0x00,0x00,
+             0x00,0x00,0x00,0x00,
+             0x00,0x00,0x00,0x00,
+             0x00,0x00
+            };
+
+            byte[] CRTPMessage = CreateMessage(0x00, 15, CRTPData);
+            for(int i = 0; i < CRTPMessage.Length; ++i)
+            {
+                CharReceived?.Invoke((byte)CRTPMessage[i]);
+            }
+        }
+
         public override void Reset()
         {
             base.Reset();

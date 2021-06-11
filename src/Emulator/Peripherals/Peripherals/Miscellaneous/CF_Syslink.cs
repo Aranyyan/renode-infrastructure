@@ -49,10 +49,18 @@ namespace Antmicro.Renode.Peripherals.Miscellaneous
             switch(data[2])
             {
                 case 0x20: // SYSLINK_OW_SCAN
-                    byte[] OwScanData = CreateMessage(0x20, 0x01, new byte[]{0x00});
+                    byte[] OwScanData = CreateMessage(0x20, 0x01, new byte[]{0x01});
                     for(int i = 0; i < OwScanData.Length; ++i)
                     {
                         CharReceived?.Invoke((byte)OwScanData[i]);
+                    }
+                    receiveFifo.Clear();
+                    break;
+		case 0x22: // OW_READ
+		    byte[] deckData = CreateMessage(0x22, 14, new byte[]{0x01,0x00,0x00,0xEB,0x04,0x05,0x06,0x07,0xBC,0x0F,0x89,0x00,0x00,0xFF});
+                    for(int i = 0; i < deckData.Length; ++i)
+                    {
+                        CharReceived?.Invoke((byte)deckData[i]);
                     }
                     receiveFifo.Clear();
                     break;

@@ -85,10 +85,6 @@ namespace Antmicro.Renode.Peripherals.Sensors
 
         public byte[] Read(int count)
         {
-            if(registerAddress==Registers.RateXLSB)
-            {
-                fifo.TryDequeueNewSample();
-            }
             // If registerAddress = 0x02 (xLSB) return 6 bytes (x,y,z)
             // else return 1 byte i.e. the register
             var result = new byte[registerAddress==Registers.RateXLSB?6:1];
@@ -135,6 +131,7 @@ namespace Antmicro.Renode.Peripherals.Sensors
             for(var i = 0; i < repeat; i++)
             {
                 fifo.FeedSample(sample);
+                fifo.TryDequeueNewSample();
             }
         }
 

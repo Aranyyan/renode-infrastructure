@@ -155,7 +155,7 @@ namespace Antmicro.Renode.Peripherals.Sensors
 
         private byte mgToByte(decimal rawData, bool msb)
         {
-            rawData = rawData * 65536 / ((decimal)(1000 * 3 * (1 << (short)accRange.Value)));
+            rawData = rawData * 32768 / ((decimal)(1000 * 1.5 * (1 << ((short)accRange.Value + 1))));
             short converted = (short)(rawData > Int16.MaxValue ? Int16.MaxValue : rawData < Int16.MinValue ? Int16.MinValue : rawData);
             return (byte)(converted >> (msb ? 8 : 0));
         }
